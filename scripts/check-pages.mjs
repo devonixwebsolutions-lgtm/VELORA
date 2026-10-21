@@ -26,4 +26,6 @@ for(const suffix of ['concept-5','footer','projects']){
   if(endpoint){const response=await window.fetch('https://example.com/VELORA'+endpoint);assert.ok(response.ok);await response.json();}
 }
 assert.ok(seen.every(url=>url.startsWith('/VELORA/content/')));
+const manifestResponse=await window.fetch('https://example.com/VELORA/_nuxt/builds/meta/velora-studio.json');
+assert.equal((await manifestResponse.json()).id,'velora-studio');
 console.log(`Verified ${Object.keys(registry.routes).length} page files, module syntax and subpath content requests.`);

@@ -1,0 +1,6 @@
+.replica-immersive{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;background:#f4f0e7}
+.replica-immersive:active{cursor:grabbing}
+.replica-immersive-plane{display:grid;position:absolute;left:0;top:0;will-change:transform}
+.replica-immersive-plane a{display:flex;align-items:center;justify-content:center;padding:35px}
+.replica-immersive-plane img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;transition:transform .5s}
+.replica-immersive-plane a:hover img{transform:scale(1.06)}

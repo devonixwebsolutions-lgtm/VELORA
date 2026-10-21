@@ -15,7 +15,7 @@ async function transform(directory) {
     if(entry.isDirectory()) { await transform(file); continue; }
     if(!/\.(?:html|css|js|mjs|json|svg)$/.test(entry.name)) continue;
     let source = await fs.readFile(file,'utf8');
-    source = source.replace(/(["'`(])\/(media|brand|content|_nuxt)\//g,(_,quote,folder)=>`${quote}${prefix}${folder}/`);
+    if(entry.name!=='replica-bootstrap.js')source = source.replace(/(["'`(])\/(media|brand|content|_nuxt)\//g,(_,quote,folder)=>`${quote}${prefix}${folder}/`);
     if(entry.name.endsWith('.html')) {
       source = source.replace(/\b(href|src|action)="\/(?!\/)([^"]*)"/g,(match,key,url)=>url.startsWith(prefix.slice(1))?match:`${key}="${prefix}${url}"`);
       source = source.replace('</head>',`<script>window.VELORA_BASE_PATH=${JSON.stringify(prefix)};</script></head>`);

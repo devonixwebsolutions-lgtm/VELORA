@@ -1,0 +1,1 @@
+import{f as c,c as o,e as t,o as n,ad as s}from"./BQbDqaaK.js";const _={},a={class:"category"};function r(d,f){const e=s;return n(),o("div",a,[t(e)])}const m=c(_,[["render",r]]);export{m as default};
