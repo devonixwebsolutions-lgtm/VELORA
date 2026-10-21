@@ -19,7 +19,7 @@ def download(url, destination):
     if destination.is_file() and destination.stat().st_size:
         return
     parsed = urllib.parse.urlparse(url)
-    assert parsed.scheme == 'https' and parsed.hostname in ['images.unsplash.com','videos.pexels.com']
+    assert parsed.scheme == 'https' and parsed.hostname in ['images.unsplash.com','images.pexels.com','videos.pexels.com']
     last = None
     for attempt in range(3):
         try:
