@@ -19,7 +19,11 @@ npm run build
 npm run check
 ```
 
-The build generates a static `dist/` folder and individual HTML files for all 151 routes. It adapts assets, API content loading, links and the Nuxt router to GitHub Pages' `/VELORA/` project path. The GitHub Actions workflow deploys that folder to Pages after a push to `main`.
+The build generates a static `dist/` folder and individual HTML files for all 151 routes. It adapts assets, API content loading, links and the Nuxt router to GitHub Pages' `/VELORA/` project path. The GitHub Actions workflow retains the licensed media in `main`, builds the site, publishes the static files to `gh-pages`, and requests a Pages build after a push to `main`.
+
+## Enable GitHub Pages once
+
+In the repository, open **Settings → Pages**. Under **Build and deployment**, set **Source** to **Deploy from a branch**, choose **gh-pages** and **/(root)**, then click **Save**. GitHub displays the public website URL in that panel after publishing. This repository setting needs an administrator; the build reports `PAGES_ACTIVATION_REQUIRED` if its token cannot enable it.
 
 ## Edit
 
