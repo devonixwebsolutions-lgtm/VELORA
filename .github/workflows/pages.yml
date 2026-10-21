@@ -58,11 +58,24 @@ jobs:
         run: |
           python3 - <<'PY'
           import json, os, urllib.error, urllib.request
-          url='https://api.github.com/repos/'+os.environ['GITHUB_REPOSITORY']+'/pages/builds'
-          request=urllib.request.Request(url,method='POST',headers={'Authorization':'Bearer '+os.environ['GH_PUBLISH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+          endpoint='https://api.github.com/repos/'+os.environ['GITHUB_REPOSITORY']+'/pages'
+          headers={'Authorization':'Bearer '+os.environ['GH_PUBLISH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}
+          def api(url, method='GET', payload=None):
+              data=json.dumps(payload).encode() if payload is not None else None
+              request=urllib.request.Request(url,data=data,method=method,headers=headers)
+              with urllib.request.urlopen(request) as response: return json.load(response)
+          site=None
           try:
-              with urllib.request.urlopen(request) as response: print('GitHub Pages build requested:',response.status)
+              try: site=api(endpoint)
+              except urllib.error.HTTPError as error:
+                  if error.code!=404: raise
+                  site=api(endpoint,'POST',{'source':{'branch':'gh-pages','path':'/'},'build_type':'legacy'})
+              if site.get('source',{}).get('branch')!='gh-pages':
+                  site=api(endpoint,'PUT',{'source':{'branch':'gh-pages','path':'/'},'build_type':'legacy'})
+              print('PAGES_SITE='+json.dumps({key:site.get(key) for key in ['html_url','status','source','build_type']}))
+              result=api(endpoint+'/builds','POST')
+              print('PAGES_BUILD='+json.dumps({key:result.get(key) for key in ['url','status','error']}))
           except urllib.error.HTTPError as error:
               if error.code not in [403,404,409]: raise
-              print('Static files are ready. Select gh-pages / root in repository Settings > Pages to activate hosting.')
+              print('PAGES_ACTIVATION_REQUIRED: HTTP '+str(error.code)+'. Static files are ready; select gh-pages / root in Settings > Pages.')
           PY
